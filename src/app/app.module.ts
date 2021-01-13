@@ -15,6 +15,13 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { RegistracijaComponent } from './registracija/registracija.component';
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
+import { DialogComponent } from './dialog/dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
+import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
+import {MatBadgeModule} from '@angular/material/badge';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,16 +32,24 @@ import {HttpClientModule} from '@angular/common/http';
     AvioKompanijaComponent,
     RezervacijeComponent,
     NotFoundComponent,
-    RegistracijaComponent
+    RegistracijaComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatIconModule,
+    MatBadgeModule
   ],
-  providers: [],
+
+  providers: [
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

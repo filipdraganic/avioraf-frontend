@@ -1,1 +1,18 @@
 <p>home works!</p>
+
+
+<button (click)="getUsers()">Useri</button>
+
+<button (click)="getNestoDrugo()">nesto drugo</button>
+
+
+<ul class="list-group mt-4">
+
+  <div *ngFor="let karta of karte">
+    <li class="list-group-item d-flex justify-content-between align-items-center row btn" (click)="goToDetails(1)">
+      <p class="col-8 h3 " style="text-align: left;"></p>
+<!--      <span class="badge">{{groupLen(group)}}</span>-->
+    </li>
+  </div>
+
+</ul>

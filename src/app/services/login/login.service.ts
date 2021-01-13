@@ -11,7 +11,7 @@ import {Korisnik} from '../../model/korisnik.model';
 export class LoginService {
 
   private readonly loginUrl = 'http://localhost:8080/api/korisnici/login'
-  private readonly getKorisnik = 'http://localhost:8080/api/korisnici/'
+  private readonly getKorisnik = 'http://localhost:8080/api/korisnici/username'
   constructor(private http: HttpClient) {
 
   }
@@ -26,9 +26,9 @@ export class LoginService {
       '"username":' + '"' + credentials.username + '"'+
       ',"password":' +'"' + credentials.password+'"' +
       "}"
-    return this.http.post(this.loginUrl, body).pipe(map((responseData: Credentials)=>{
-      console.log("pipeovanje")
-      // console.log(responseData)
+    let promenjiva =  this.http.post(this.loginUrl, body).pipe(map((responseData: Credentials)=>{
+      //console.log("pipeovanje")
+      console.log(responseData)
       localStorage.setItem("jwt", responseData.JWT)
       localStorage.setItem("username", responseData.username)
 
@@ -36,19 +36,28 @@ export class LoginService {
 
     }))
 
+    console.log(promenjiva)
+
+    return promenjiva
+
   }
 
   setupLocalstorage(){
-    console.log(this.getKorisnik + localStorage.getItem("username"))
-    return this.http.get(this.getKorisnik + localStorage.getItem("username")).pipe(map((korisnik: Korisnik)=>{
-      console.log("pipeovanje2")
-      // console.log(responseData)
-      localStorage.setItem("id", String(korisnik.id))
-      console.log(localStorage.getItem("id"))
-
-
-
+    let promenjiva = this.http.get(this.getKorisnik, {
+      params:{
+        username:localStorage.getItem("username")
+      },
+      headers:{
+        'Authorization': 'Bearer ' + localStorage.getItem("jwt")
+      }
+    }).pipe(map((korisnik: Korisnik)=>{
+      localStorage.setItem("korisnik", JSON.stringify(korisnik))
     }))
+    console.log("RETURN DATA BELOW");
+    console.log(promenjiva);
+
+    return promenjiva
+
   }
 
   logout(){

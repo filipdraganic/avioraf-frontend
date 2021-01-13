@@ -3,6 +3,8 @@ import {LoginService} from '../services/login/login.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {KorisnikService} from '../services/korisnik/korisnik.service';
+import {DialogComponent} from '../dialog/dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,8 @@ export class LoginComponent implements OnInit {
   constructor(private loginService: LoginService,
               private router: Router,
               private formBuilder: FormBuilder,
-              private userService: KorisnikService) {
+              private userService: KorisnikService,
+              public dialog: MatDialog) {
 
     this.loginForm = this.formBuilder.group({
       username:['', [Validators.required, Validators.minLength(4)]],
@@ -36,11 +39,26 @@ export class LoginComponent implements OnInit {
   }
 
   public submitForm(credentials){
-    this.loginService.login(credentials).subscribe(data=>{
+    let promenjiva = this.loginService.login(credentials).subscribe(data=>{
+
+      this.loginService.setupLocalstorage().subscribe( data=>{
+        console.log("USPEH!");
+        console.log(data)
+      }, other=>{
+        console.log("ERROR" + other)
+      })
+
       this.router.navigate([''])
 
-    })
-    this.loginService.setupLocalstorage()
+    }, other=> {
+
+      const dialogRef = this.dialog.open(DialogComponent);
+
+      dialogRef.afterClosed().subscribe(result => {
+      })
+    });
+
+    // this.loginService.setupLocalstorage()
 
   }
 

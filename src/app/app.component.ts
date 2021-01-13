@@ -1,5 +1,7 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
 import {Router} from '@angular/router';
+import {MatIconModule} from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-root',
@@ -23,16 +25,22 @@ export class AppComponent {
 
   logout(){
     localStorage.removeItem("jwt");
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
 
   }
 
   getUsername(){
-    return localStorage.getItem("username");
+    return JSON.parse(localStorage.getItem("korisnik"))["username"];
   }
 
+  getBookingsCount(){
+    return "BookingsCount :" + (JSON.parse(localStorage.getItem("korisnik"))["bookings"]).length
+  }
+
+
+
   ngAfterViewChecked(){
-    console.log("ng after view checked");
+    //console.log("ng after view checked");
     this.cdRef.detectChanges();
   }
 }

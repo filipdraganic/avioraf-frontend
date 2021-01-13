@@ -1,4 +1,5 @@
-<header class="masthead mb-auto">
+<header class="masthead mb-auto" xmlns="http://www.w3.org/1999/html">
+
   <div class="inner justify-content-center">
 
 
@@ -23,6 +24,12 @@
             <a class="nav-link " routerLink="login">Login</a>
           </li>
           <li class="nav-item " [hidden]="!checkLogin()">
+            <a>Username : {{getUsername()}}   </a>
+<!--            <a> {{getBookingsCount()}}</a>-->
+            <a class="btn" (click)="checkLogin()"><mat-icon aria-hidden="false" aria-label="" matBadge="4">filter_none</mat-icon></a>
+
+
+
             <a class="nav-link " routerLink="" (click)="logout()">Logout</a>
           </li>
         </ul>

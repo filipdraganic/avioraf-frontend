@@ -2,19 +2,19 @@
   <form [formGroup]="loginForm" (ngSubmit)="submitForm(loginForm.value)">
     <div class="form-group">
       <label for="inputUsername">Username</label>
-      <input type="email" id="inputUsername"class="form-control" placeholder="Enter username" formControlName="username">
+      <input type="email" id="inputUsername"class="form-control" placeholder="Enter username" formControlName="username" required>
       <div class="error-message" *ngIf="username.errors?.required"> Username is required! </div>
     </div>
 
     <div class="form-group">
       <label for="inputPassword">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Enter password" formControlName="password">
+      <input type="password" id="inputPassword" class="form-control" placeholder="Enter password" formControlName="password" required>
       <div class="error-message" *ngIf="password.errors?.required"> Password is required! </div>
       <div class="error-message" *ngIf="password.errors?.minlength"> Password has to be at least 4 characters long! </div>
     </div>
 
 
 
-    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Submit</button>
+    <button type="submit" class="btn btn-primary"  >Submit</button>
   </form>
 </div>
