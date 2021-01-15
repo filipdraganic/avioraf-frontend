@@ -12,7 +12,7 @@ const routes: Routes = [
   {path:"", component: HomeComponent},
   {path:"login", component: LoginComponent},
   {path:"rezervacije", component: RezervacijeComponent},
-  {path:"izmena-karata/:id", component: IzmenaKarataComponent},
+  {path:"karta/:id", component: IzmenaKarataComponent},
   {path:"avio-kompanija/:id", component: AvioKompanijaComponent},
   {path:"registracija", component: RegistracijaComponent},
   {path:"**", component:NotFoundComponent}

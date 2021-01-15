@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 
 export class KorisnikService{
   private readonly getUsersUrl = "http://localhost:8080/api/korisnici/all"
-  private readonly getUserUrl = "http://localhost:8080/api/korisnici/"
+  private readonly getUserUrl = "http://localhost:8080/api/korisnici/username"
   private readonly delUserUrl = "http://localhost:8080/api/korisnici/"
   private readonly createUserUrl = "http://localhost:8080/api/korisnici/"
   private readonly addBookingToUserUrl = "http://localhost:8080/api/korisnici/"
@@ -20,6 +20,7 @@ export class KorisnikService{
   private users
   private user: Observable<Korisnik>
   private helper = new JwtHelperService()
+  private korisnik: Observable<Korisnik>
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -47,25 +48,6 @@ export class KorisnikService{
     else return null
   }
 
-
-  setupLocalstorage() {
-    console.log('Bearer ' + localStorage.getItem("jwt"))
-
-    console.log("setupovanje local storage")
-    let promenjiva = this.http.get(this.getKorisnikUrl, {
-      params: {
-        username: localStorage.getItem("username")
-      },
-      // headers: {
-      //   'Authorization': 'Bearer ' + localStorage.getItem("jwt")
-      // }
-    })
-    console.log("RETURN DATA BELOW");
-    console.log(promenjiva);
-
-    return promenjiva
-  }
-
   getUser(): Observable<Korisnik>{
     if(this.helper.isTokenExpired(localStorage.getItem("jwt"))){
       localStorage.removeItem("jwt")
@@ -89,7 +71,6 @@ export class KorisnikService{
     this.user = this.http.delete<Korisnik>(this.delUserUrl+id, {
       params:{},
       headers:{
-        'content-type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem("jwt")
       }
     })
@@ -103,7 +84,7 @@ export class KorisnikService{
       "id:0" +
       ",username:" + korisnik.username+
       ",password:" + korisnik.password+
-      ",userType:" + korisnik.tipKorisnika+
+      ",userType:" + korisnik.userType+
       "}"
 
     return this.http.post<Korisnik>(this.createUserUrl, body,
@@ -123,6 +104,23 @@ export class KorisnikService{
     let jwttoken = this.helper.decodeToken(localStorage.getItem("jwt"))
 
     console.log(jwttoken)
+  }
+
+  setupLocalstorage() :Observable<Korisnik>{
+
+    this.korisnik = this.http.get<Korisnik>(this.getUserUrl, {
+      params:{
+        username:localStorage.getItem("username")
+      },
+      headers:{
+        'Authorization': 'Bearer ' + localStorage.getItem("jwt")
+      }
+    })
+    console.log("RETURN DATA BELOW");
+    console.log(this.korisnik);
+
+    return this.korisnik
+
   }
 
 

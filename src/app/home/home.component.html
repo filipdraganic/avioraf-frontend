@@ -1,18 +1,42 @@
-<p>home works!</p>
+<img src="src/assets/AvioRafLogo.png" alt="">
+<h1 class="justify-content-center">AvioRAF</h1>
+
+<button class="btn" (click)="getUsers()">Useri</button>
+
+<button class="btn" (click)="getNestoDrugo()">nesto drugo</button>
 
 
-<button (click)="getUsers()">Useri</button>
+<table class="table">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">Avionska kompanija</th>
+    <th scope="col">Smer</th>
+    <th scope="col">Pocetak</th>
+    <th scope="col">Destinacija</th>
+    <th scope="col">Datum polaska</th>
+    <th scope="col">Datum povratka</th>
+    <th scope="col">Broj preostalih karata</th>
+    <th scope="col" *ngIf="getPermission()">Izmena karte</th>
+    <th scope="col" *ngIf="getPermission()">Brisanje karte</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let karta of karte">
+      <th scope="row" >{{karta.avionskaKompanija.name}}</th>
+      <td *ngIf="karta.oneway">Jednosmerna</td>
+      <td *ngIf="!karta.oneway">Povratna</td>
+      <td>{{karta.let.origin.name}}</td>
+      <td>{{karta.let.destination.name}}</td>
+      <td>{{karta.departDate}}</td>
+      <td *ngIf="karta.returnDate">{{karta.returnDate}}</td>
+      <td *ngIf="!karta.returnDate">/</td>
+      <td *ngIf="karta.count < 10" style="color: red">Jos samo {{karta.count}}</td>
+      <td *ngIf="karta.count >= 10" style="color: black">{{karta.count}}</td>
+      <td *ngIf="getPermission()" ><a class="btn btn-warning" (click)="izmenaKarte(karta.id)">Izmena karte</a></td>
+      <td *ngIf="getPermission()" ><a class="btn btn-danger" (click)="brisanjeKarte(karta)">Obrisi kartu</a></td>
 
-<button (click)="getNestoDrugo()">nesto drugo</button>
 
+    </tr>
 
-<ul class="list-group mt-4">
-
-  <div *ngFor="let karta of karte">
-    <li class="list-group-item d-flex justify-content-between align-items-center row btn" (click)="goToDetails(1)">
-      <p class="col-8 h3 " style="text-align: left;"></p>
-<!--      <span class="badge">{{groupLen(group)}}</span>-->
-    </li>
-  </div>
-
-</ul>
+  </tbody>
+</table>

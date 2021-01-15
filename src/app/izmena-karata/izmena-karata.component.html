@@ -1,1 +1,72 @@
-<p>izmena-karata works!</p>
+<div class="col-4">
+  <h1>Izmena karte</h1>
+
+  <form [formGroup]="izmenaForm" (ngSubmit)="submitForm(izmenaForm.value)">
+    <div class="form-group">
+      <label for="inputAvionskaKompanija">Avionska kompanija</label>
+      <input type="text" id="inputAvionskaKompanija"class="form-control" placeholder="Uneti ime avio kompanije" formControlName="avionskaKompanija" required>
+<!--      <div class="error-message" *ngIf="avionskaKompanija.errors?.required"> AvioKompanija je neophodno! </div>-->
+    </div>
+
+    <div class="form-group">
+
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputSmer">Smer</label>
+      </div>
+      <select class="custom-select" id="inputSmer" formControlName="smer">
+        <option *ngFor="let smer of smerovi">{{smer}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputPocetak">Pocetak</label>
+      </div>
+      <select class="custom-select" id="inputPocetak" formControlName="pocetak">
+        <option  [disabled]="destinacija.value == grad.name" *ngFor="let grad of gradovi" [value]="grad.name" [attr.selected]="karta.let.origin.name == grad.name ? true:null"> {{grad.name}}</option>
+      </select>
+<!--      <div class="error-message" *ngIf="pocetak.errors?"> Destinacija i pocetak ne mogu biti isti! </div>-->
+
+    </div>
+
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputDestinacija">Destinacija</label>
+      </div>
+      <select class="custom-select" id="inputDestinacija" formControlName="destinacija">
+          <option [disabled]="pocetak.value == grad.name" *ngFor="let grad of gradovi" [value]="grad.name" [attr.selected]="karta.let.destination.name == grad.name ? true:null"> {{grad.name}}</option>
+
+      </select>
+<!--      <div class="error-message" *ngIf="destinacija.errors?"> Destinacija i pocetak ne mogu biti isti! </div>-->
+    </div>
+
+    <div class="form-group">
+      <label for="inputDatumPolaska">Datum polaska</label>
+      <input id="inputDatumPolaska" class="form-control" placeholder="Uneti Datum" formControlName="datumPolaska" required>
+<!--      <div class="error-message" *ngIf="datumPolaska.errors?.required"> Datum polaska je neophodan! </div>-->
+    </div>
+
+    <div class="form-group" *ngIf="smer.value == 'Povratna'">
+      <label for="inputDatumPovratka">Datum povratka</label>
+      <input  id="inputDatumPovratka" class="form-control" placeholder="Enter password" formControlName="datumPovratka" required>
+<!--      <div class="error-message" *ngIf="datumPovratka.errors?"> Datum povratka je neophodan! </div>-->
+    </div>
+
+
+    <div class="form-group">
+      <label for="inputBrojKarata">Broj karata</label>
+      <input id="inputBrojKarata" class="form-control" placeholder="Uneti broj karata" formControlName="brojKarata" required>
+<!--      <div class="error-message" *ngIf="brojKarata.errors?.required"> Broj karata ne moze biti manji od nule! </div>-->
+    </div>
+
+
+
+
+    <div class="row">
+      <button type="submit" class="btn btn-primary mr-3 ml-2"  >Submit</button>
+      <button class="btn btn-warning" (click)="vratiSeNazad()"  >Cancel</button>
+
+    </div>
+
+  </form>
+</div>

@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Credentials} from '../../model/credentials.model';
 import {map} from 'rxjs/operators';
 import {Korisnik} from '../../model/korisnik.model';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn:'root'
@@ -12,6 +13,9 @@ export class LoginService {
 
   private readonly loginUrl = 'http://localhost:8080/api/korisnici/login'
   private readonly getKorisnik = 'http://localhost:8080/api/korisnici/username'
+
+  private korisnik : Observable<Korisnik>
+
   constructor(private http: HttpClient) {
 
   }
@@ -42,23 +46,7 @@ export class LoginService {
 
   }
 
-  setupLocalstorage(){
-    let promenjiva = this.http.get(this.getKorisnik, {
-      params:{
-        username:localStorage.getItem("username")
-      },
-      headers:{
-        'Authorization': 'Bearer ' + localStorage.getItem("jwt")
-      }
-    }).pipe(map((korisnik: Korisnik)=>{
-      localStorage.setItem("korisnik", JSON.stringify(korisnik))
-    }))
-    console.log("RETURN DATA BELOW");
-    console.log(promenjiva);
 
-    return promenjiva
-
-  }
 
   logout(){
     localStorage.removeItem("jwt")

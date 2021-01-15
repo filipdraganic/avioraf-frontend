@@ -10,10 +10,9 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class AppComponent {
   title = 'avioraf-frontend';
-  private router: Router;
   today: number = Date.now();
 
-  constructor(private cdRef: ChangeDetectorRef){}
+  constructor(private cdRef: ChangeDetectorRef,  private router: Router){}
 
   checkLogin(){
     if(localStorage.getItem('jwt') == null){
@@ -25,12 +24,18 @@ export class AppComponent {
 
   logout(){
     localStorage.removeItem("jwt");
-    this.router.navigate(['/login']);
+    this.router.navigate(['login']);
 
   }
 
   getUsername(){
-    return JSON.parse(localStorage.getItem("korisnik"))["username"];
+    if(localStorage.getItem("jwt") == null) {
+
+    }
+    else{
+
+      return localStorage.getItem("username");
+    }
   }
 
   getBookingsCount(){

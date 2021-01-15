@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup
 
   constructor(private loginService: LoginService,
+              private korisnikService: KorisnikService,
               private router: Router,
               private formBuilder: FormBuilder,
               private userService: KorisnikService,
@@ -41,9 +42,10 @@ export class LoginComponent implements OnInit {
   public submitForm(credentials){
     let promenjiva = this.loginService.login(credentials).subscribe(data=>{
 
-      this.loginService.setupLocalstorage().subscribe( data=>{
+      this.korisnikService.setupLocalstorage().subscribe( data=>{
         console.log("USPEH!");
         console.log(data)
+        localStorage.setItem("korisnik", JSON.stringify(data));
       }, other=>{
         console.log("ERROR" + other)
       })

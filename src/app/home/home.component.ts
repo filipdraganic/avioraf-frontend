@@ -8,6 +8,7 @@ import {RezervacijaService} from '../services/rezervacija/rezervacija.service';
 import {Karta} from '../model/karta.model';
 import {KartaService} from '../services/karta/karta.service';
 import {Observable} from 'rxjs';
+import {Korisnik} from '../model/korisnik.model';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,7 @@ export class HomeComponent implements OnInit {
   private helper = new JwtHelperService()
 
   public karte: Karta[]
-
+  public karta: Karta
   constructor(private korisnikService: KorisnikService,
               private loginService:LoginService,
               private kartaService:KartaService,
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
   getUsers(){
     console.log("nesto")
     // console.log(this.korisnikService.getUsers())
-    let response = this.loginService.setupLocalstorage().subscribe(data=>{
+    let response = this.korisnikService.setupLocalstorage().subscribe(data=>{
       console.log(data);
     })
     console.log(response);
@@ -74,6 +75,36 @@ export class HomeComponent implements OnInit {
 
   goToDetails(id){
 
+  }
+
+  getPermission(){
+    let korisnik =  JSON.parse(localStorage.getItem("korisnik"));
+
+
+    if(korisnik.userType == "ADMIN"){
+      // console.log("Korisnik je admin");
+      return true
+    }
+    else {
+      // console.log("Korisnik je obican user" + korisnik.tipKorisnika)
+      return false
+    }
+
+
+
+  }
+
+
+  brisanjeKarte(karta){
+    this.kartaService.delKarta(karta).subscribe( data =>{
+      console.log("data" + data);
+      location.reload()
+
+    })
+  }
+
+  izmenaKarte(id){
+    this.router.navigate(['karta/'+id])
   }
 
 }
