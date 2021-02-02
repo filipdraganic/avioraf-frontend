@@ -18,10 +18,12 @@
     <th scope="col">Broj preostalih karata</th>
     <th scope="col" *ngIf="getPermission()">Izmena karte</th>
     <th scope="col" *ngIf="getPermission()">Brisanje karte</th>
+    <th scope="col" *ngIf="!getPermission()">Rezervisi kartu</th>
+
   </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let karta of karte">
+    <tr *ngFor="let karta of karte ">
       <th scope="row" >{{karta.avionskaKompanija.name}}</th>
       <td *ngIf="karta.oneway">Jednosmerna</td>
       <td *ngIf="!karta.oneway">Povratna</td>
@@ -34,9 +36,17 @@
       <td *ngIf="karta.count >= 10" style="color: black">{{karta.count}}</td>
       <td *ngIf="getPermission()" ><a class="btn btn-warning" (click)="izmenaKarte(karta.id)">Izmena karte</a></td>
       <td *ngIf="getPermission()" ><a class="btn btn-danger" (click)="brisanjeKarte(karta)">Obrisi kartu</a></td>
+      <td *ngIf="!getPermission()" ><a class="btn btn-danger" (click)="rezervisiKartu(karta)">Rezervisi</a></td>
 
 
     </tr>
 
   </tbody>
+  <mat-paginator [length]="lenght"
+                 [pageSize]="pageSize"
+                 (page)="handlePageEvent($event)"
+                  [pageIndex]="pageIndex">
+  </mat-paginator>
+
 </table>
+

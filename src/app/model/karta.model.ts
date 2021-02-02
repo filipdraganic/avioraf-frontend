@@ -1,9 +1,9 @@
-import {AvioKompanija} from './avio-kompanija.model';
+import {AvionskaKompanija} from './avio-kompanija.model';
 import {Let} from './let.model';
 
 export interface Karta {
   id: number;
-  avionskaKompanija:AvioKompanija;
+  avionskaKompanija:AvionskaKompanija;
   oneway: boolean;
   departDate: Date;
   returnDate: Date;

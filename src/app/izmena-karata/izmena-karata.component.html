@@ -3,9 +3,14 @@
 
   <form [formGroup]="izmenaForm" (ngSubmit)="submitForm(izmenaForm.value)">
     <div class="form-group">
-      <label for="inputAvionskaKompanija">Avionska kompanija</label>
-      <input type="text" id="inputAvionskaKompanija"class="form-control" placeholder="Uneti ime avio kompanije" formControlName="avionskaKompanija" required>
-<!--      <div class="error-message" *ngIf="avionskaKompanija.errors?.required"> AvioKompanija je neophodno! </div>-->
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputAvionskaKompanija">Avionska kompnaija</label>
+      </div>
+      <select class="custom-select" id="inputAvionskaKompanija" formControlName="avionskaKompanija"  >
+        <option *ngFor="let avionskaKompanija of kompanije" [value]="avionskaKompanija.id"> {{avionskaKompanija.name}}</option>
+
+      </select>
+      <!--      <div class="error-message" *ngIf="destinacija.errors?"> Destinacija i pocetak ne mogu biti isti! </div>-->
     </div>
 
     <div class="form-group">
@@ -18,26 +23,38 @@
       </select>
     </div>
 
+<!--    <div class="form-group">-->
+<!--      <div class="input-group-prepend">-->
+<!--        <label class="input-group-text" for="inputPocetak">Pocetak</label>-->
+<!--      </div>-->
+<!--      <select class="custom-select" id="inputPocetak" formControlName="pocetak">-->
+<!--        <option  [disabled]="destinacija.value == grad.name" *ngFor="let grad of gradovi" [value]="grad.name" [attr.selected]="karta.let.origin.name == grad.name ? true:null"> {{grad.name}}</option>-->
+<!--      </select>-->
+<!--&lt;!&ndash;      <div class="error-message" *ngIf="pocetak.errors?"> Destinacija i pocetak ne mogu biti isti! </div>&ndash;&gt;-->
+
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--      <div class="input-group-prepend">-->
+<!--        <label class="input-group-text" for="inputDestinacija">Destinacija</label>-->
+<!--      </div>-->
+<!--      <select class="custom-select" id="inputDestinacija" formControlName="destinacija">-->
+<!--          <option [disabled]="pocetak.value == grad.name" *ngFor="let grad of gradovi" [value]="grad.name" [attr.selected]="karta.let.destination.name == grad.name ? true:null"> {{grad.name}}</option>-->
+
+<!--      </select>-->
+<!--&lt;!&ndash;      <div class="error-message" *ngIf="destinacija.errors?"> Destinacija i pocetak ne mogu biti isti! </div>&ndash;&gt;-->
+<!--    </div>-->
+
+
     <div class="form-group">
       <div class="input-group-prepend">
-        <label class="input-group-text" for="inputPocetak">Pocetak</label>
+        <label class="input-group-text" for="inputLet">Destinacija</label>
       </div>
-      <select class="custom-select" id="inputPocetak" formControlName="pocetak">
-        <option  [disabled]="destinacija.value == grad.name" *ngFor="let grad of gradovi" [value]="grad.name" [attr.selected]="karta.let.origin.name == grad.name ? true:null"> {{grad.name}}</option>
-      </select>
-<!--      <div class="error-message" *ngIf="pocetak.errors?"> Destinacija i pocetak ne mogu biti isti! </div>-->
-
-    </div>
-
-    <div class="form-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="inputDestinacija">Destinacija</label>
-      </div>
-      <select class="custom-select" id="inputDestinacija" formControlName="destinacija">
-          <option [disabled]="pocetak.value == grad.name" *ngFor="let grad of gradovi" [value]="grad.name" [attr.selected]="karta.let.destination.name == grad.name ? true:null"> {{grad.name}}</option>
+      <select class="custom-select" id="inputLet" formControlName="let"  >
+        <option *ngFor="let mojlet of letovi" [value]="mojlet.id"> {{mojlet.origin.name}}->{{mojlet.destination.name}}</option>
 
       </select>
-<!--      <div class="error-message" *ngIf="destinacija.errors?"> Destinacija i pocetak ne mogu biti isti! </div>-->
+      <!--      <div class="error-message" *ngIf="destinacija.errors?"> Destinacija i pocetak ne mogu biti isti! </div>-->
     </div>
 
     <div class="form-group">
@@ -49,6 +66,9 @@
     <div class="form-group" *ngIf="smer.value == 'Povratna'">
       <label for="inputDatumPovratka">Datum povratka</label>
       <input  id="inputDatumPovratka" class="form-control" placeholder="Enter password" formControlName="datumPovratka" required>
+
+
+
 <!--      <div class="error-message" *ngIf="datumPovratka.errors?"> Datum povratka je neophodan! </div>-->
     </div>
 
@@ -56,14 +76,14 @@
     <div class="form-group">
       <label for="inputBrojKarata">Broj karata</label>
       <input id="inputBrojKarata" class="form-control" placeholder="Uneti broj karata" formControlName="brojKarata" required>
-<!--      <div class="error-message" *ngIf="brojKarata.errors?.required"> Broj karata ne moze biti manji od nule! </div>-->
+      <div class="error-message" *ngIf="brojKarata.errors?.required"> Broj karata ne moze biti manji od nule! </div>
     </div>
 
 
 
 
     <div class="row">
-      <button type="submit" class="btn btn-primary mr-3 ml-2"  >Submit</button>
+      <button type="submit" class="btn btn-primary mr-3 ml-2"  [disabled]="!izmenaForm.valid" >Submit</button>
       <button class="btn btn-warning" (click)="vratiSeNazad()"  >Cancel</button>
 
     </div>

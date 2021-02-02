@@ -1,12 +1,20 @@
 import {Observable} from 'rxjs';
 import {Karta} from '../../model/Karta.model';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+  })
+}
 
 @Injectable({
   providedIn:'root'
 })
+
+
 
 export class KartaService {
 
@@ -14,7 +22,7 @@ export class KartaService {
   private readonly getKarteUrl = "http://localhost:8080/api/karte/all"
   private readonly getKartaUrl = "http://localhost:8080/api/karte"
   private readonly delKarteUrl = "http://localhost:8080/api/karte"
-  private readonly putKartaUrl = "http://localhost:8080/api/karte"
+  private readonly putKartaUrl = "http://localhost:8080/api/karte/"
 
 
   private karte: Observable<Karta[]>
@@ -27,7 +35,7 @@ export class KartaService {
   }
 
 
-  getKarte() : Observable<Karta[]>{
+  getKarte(pageIndex) : Observable<Karta[]>{
     if(this.helper.isTokenExpired(localStorage.getItem("jwt"))){
       localStorage.removeItem("jwt")
       console.log("Prvi");
@@ -39,6 +47,9 @@ export class KartaService {
         headers:{
           'Authorization':'Bearer '+ localStorage.getItem("jwt")
 
+        },
+        params:{
+          currentPage:pageIndex+1
         }
       })
     }else{
@@ -74,6 +85,7 @@ export class KartaService {
     return this.karta;
   }
 
+
   delKarta(karta) {
     console.log("Brisanje karte start");
     if(this.helper.isTokenExpired(localStorage.getItem("jwt"))){
@@ -81,17 +93,18 @@ export class KartaService {
       return null
     }
 
-    console.log("Brisanje karte 2");
+    console.log("Brisanje karte 2 sa idjem " + karta.id);
 
     if(localStorage.getItem("jwt") != null){
-      let promenjiva = this.http.delete(this.delKarteUrl,{
+      let promenjiva = this.http.delete<Karta>(this.delKarteUrl+"/"+karta.id,{
         headers:{
+          'content-type': 'application/json',
           'Authorization':'Bearer '+ localStorage.getItem("jwt")
 
-        },
-        params:{
-          id:karta.id
+        },params:{
+
         }
+
 
       })
       console.log("Brisanje karte 3");
@@ -100,33 +113,39 @@ export class KartaService {
     }else{
       return null
     }
-
-    return null
   }
 
   izmenaKarte(karta) {
-    console.log("Brisanje karte start");
+    console.log("izmena karte start");
+    console.log(karta);
     if(this.helper.isTokenExpired(localStorage.getItem("jwt"))){
       localStorage.removeItem("jwt")
       return null
     }
 
-    console.log("Brisanje karte 2");
+    console.log("izmena karte 2");
+    if(karta.oneway == true){
+      karta.returnDate = null
+    }
 
     if(localStorage.getItem("jwt") != null){
-      this.karta= this.http.put<Karta>(this.putKartaUrl,{
-        headers:{
-          'Authorization':'Bearer '+ localStorage.getItem("jwt")
+      let response = this.http.put(this.putKartaUrl,{
+          id: karta.id,
+          avionskaKompanija: karta.avionskaKompanija,
+          oneway: karta.oneway,
+          departDate: karta.departDate,
+          returnDate: karta.returnDate,
+          let: karta.let,
+          count: karta.count
 
-        },
-        params:{
-          karta:karta
-        }
+        }, httpOptions
 
-      })
-      console.log("Brisanje karte 3");
+
+
+      )
+      console.log("izmena karte 3");
       console.log(this.karta);
-      return this.karta;
+      return response
     }else{
       return null
     }

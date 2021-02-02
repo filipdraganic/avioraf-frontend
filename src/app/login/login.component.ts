@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {LoginService} from '../services/login/login.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {KorisnikService} from '../services/korisnik/korisnik.service';
 import {DialogComponent} from '../dialog/dialog.component';
@@ -15,6 +15,10 @@ export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup
 
+  usernameText:string
+  passwordText:string
+
+
   constructor(private loginService: LoginService,
               private korisnikService: KorisnikService,
               private router: Router,
@@ -22,9 +26,22 @@ export class LoginComponent implements OnInit {
               private userService: KorisnikService,
               public dialog: MatDialog) {
 
-    this.loginForm = this.formBuilder.group({
-      username:['', [Validators.required, Validators.minLength(4)]],
-      password:['', [Validators.required, Validators.pattern("^(?=\\D*\\d)\\S{6,}$")]]
+    // this.loginForm = this.formBuilder.group({
+    //   username:['', [Validators.required, Validators.minLength(4)]],
+    //   password:['', [Validators.required, Validators.pattern("^(?=\\D*\\d)\\S{6,}$")]]
+    //
+    //
+    // })
+
+    this.loginForm = new FormGroup({
+      username: new FormControl(this.usernameText,[
+        Validators.required,
+        Validators.minLength(4)
+      ]),
+      password: new FormControl(this.passwordText, [
+        Validators.required,
+        Validators.pattern("^(?=\\D*\\d)\\S{6,}$")
+      ])
     })
   }
 
@@ -40,6 +57,7 @@ export class LoginComponent implements OnInit {
   }
 
   public submitForm(credentials){
+
     let promenjiva = this.loginService.login(credentials).subscribe(data=>{
 
       this.korisnikService.setupLocalstorage().subscribe( data=>{

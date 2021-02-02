@@ -9,6 +9,7 @@ import {Karta} from '../model/karta.model';
 import {KartaService} from '../services/karta/karta.service';
 import {Observable} from 'rxjs';
 import {Korisnik} from '../model/korisnik.model';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-home',
@@ -19,8 +20,17 @@ export class HomeComponent implements OnInit {
 
   private helper = new JwtHelperService()
 
+  public page = 1
+  public pageSize = 5
+  public pageEvent: PageEvent;
+  public pageIndex = 0
+  public lenght = 0
+
   public karte: Karta[]
   public karta: Karta
+
+
+
   constructor(private korisnikService: KorisnikService,
               private loginService:LoginService,
               private kartaService:KartaService,
@@ -62,15 +72,19 @@ export class HomeComponent implements OnInit {
     console.log(JSON.parse(localStorage.getItem("korisnik")));
   }
 
-  getKarte(){
-    if(this.kartaService.getKarte()) {
+  getKarteToShow(){
+    return this.karte
+  }
+
+  getKarte(pageNumber: number = 0){
       console.log("getKarte pocetak");
-      this.kartaService.getKarte().subscribe(karte => {
+      this.kartaService.getKarte(pageNumber).subscribe(karte => {
         console.log(karte);
-        this.karte = karte
+        this.karte = karte['avionskaKartaList']
+        this.lenght = karte['size']
         console.log("Isprintovane karte??");
       })
-    }
+
   }
 
   goToDetails(id){
@@ -106,5 +120,17 @@ export class HomeComponent implements OnInit {
   izmenaKarte(id){
     this.router.navigate(['karta/'+id])
   }
+
+  rezervisiKartu(karta){
+    this.korisnikService.addBookingToUser(karta.id).subscribe(data =>{
+      console.log(data);
+    })
+  }
+
+  handlePageEvent(event :PageEvent){
+    this.getKarte(event.pageIndex)
+  }
+
+
 
 }

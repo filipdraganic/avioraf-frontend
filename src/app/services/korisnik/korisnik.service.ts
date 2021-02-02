@@ -14,7 +14,7 @@ export class KorisnikService{
   private readonly getUserUrl = "http://localhost:8080/api/korisnici/username"
   private readonly delUserUrl = "http://localhost:8080/api/korisnici/"
   private readonly createUserUrl = "http://localhost:8080/api/korisnici/"
-  private readonly addBookingToUserUrl = "http://localhost:8080/api/korisnici/"
+  private readonly addBookingToUserUrl = "http://localhost:8080/api/korisnici/booking"
   private readonly getKorisnikUrl = "http://localhost:8080/api/korisnici/username"
 
   private users
@@ -99,11 +99,25 @@ export class KorisnikService{
 
   }
 
-  addBookingToUser(bookingId:Number, korisnikId:Number){
+  addBookingToUser(bookingId:Number) :Observable<Korisnik>{
 
-    let jwttoken = this.helper.decodeToken(localStorage.getItem("jwt"))
+  let korisnikId = JSON.parse(localStorage.getItem("korisnik"))['id']
+  let jwttoken = this.helper.decodeToken(localStorage.getItem("jwt"))
 
     console.log(jwttoken)
+
+    let promenjiva = this.http.put<Korisnik>(this.addBookingToUserUrl, {
+      headers:{
+        'Authorization': 'Bearer ' + localStorage.getItem("jwt")
+      },
+      params:{
+        bookingId:bookingId,
+        korisnikId:korisnikId
+      }
+    })
+
+    return promenjiva
+
   }
 
   setupLocalstorage() :Observable<Korisnik>{

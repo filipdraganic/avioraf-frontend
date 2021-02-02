@@ -20,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     BrowserAnimationsModule,
     MatDialogModule,
     MatIconModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatPaginatorModule
   ],
 
   providers: [
