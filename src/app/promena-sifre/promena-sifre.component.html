@@ -1,0 +1,21 @@
+<div class="col-4">
+  <form [formGroup]="promenaSifreForm" (ngSubmit)="submitForm(promenaSifreForm.value)">
+    <div class="form-group">
+      <label for="inputPassword">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Enter password" formControlName="password" required>
+      <div class="error-message" *ngIf="password.errors?.required"> Password is required </div>
+      <div class="error-message" *ngIf="passwordConfirm.errors?.minlength"> Password has to be at least 4 characters long! </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputPasswordConfirm">Confirm Password</label>
+      <input type="password" id="inputPasswordConfirm" class="form-control" placeholder="Repeat password" formControlName="passwordConfirm" required>
+      <div class="error-message" *ngIf="passwordConfirm.errors?.required"> Password is required! </div>
+      <div class="error-message" *ngIf="passwordConfirm.errors?.minlength"> Password has to be at least 4 characters long! </div>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary"  [disabled]="!promenaSifreForm.valid">Submit</button>
+  </form>
+</div>

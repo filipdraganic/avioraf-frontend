@@ -7,6 +7,7 @@ import {IzmenaKarataComponent} from './izmena-karata/izmena-karata.component';
 import {AvioKompanijaComponent} from './avio-kompanija/avio-kompanija.component';
 import {RegistracijaComponent} from './registracija/registracija.component';
 import {NotFoundComponent} from './not-found/not-found.component';
+import {PromenaSifreComponent} from './promena-sifre/promena-sifre.component';
 
 const routes: Routes = [
   {path:"", component: HomeComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path:"karta/:id", component: IzmenaKarataComponent},
   {path:"avio-kompanija/:id", component: AvioKompanijaComponent},
   {path:"registracija", component: RegistracijaComponent},
+  {path:"login/promenaSifre", component:PromenaSifreComponent},
   {path:"**", component:NotFoundComponent}
 ]
 

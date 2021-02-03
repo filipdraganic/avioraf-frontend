@@ -2,8 +2,15 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Korisnik} from '../../model/korisnik.model';
 import { JwtHelperService } from "@auth0/angular-jwt";
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+  })
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +23,8 @@ export class KorisnikService{
   private readonly createUserUrl = "http://localhost:8080/api/korisnici/"
   private readonly addBookingToUserUrl = "http://localhost:8080/api/korisnici/booking"
   private readonly getKorisnikUrl = "http://localhost:8080/api/korisnici/username"
+  private readonly updateUserPasswordUrl = "http://localhost:8080/api/korisnici/sifra"
+  private readonly updateKorisnikUrl = "http://localhost:8080/api/korisnici"
 
   private users
   private user: Observable<Korisnik>
@@ -132,6 +141,37 @@ export class KorisnikService{
     })
     console.log("RETURN DATA BELOW");
     console.log(this.korisnik);
+
+    return this.korisnik
+
+  }
+
+  updateSifraKorisniku(id, password): Observable<Korisnik>{
+
+    this.korisnik = this.http.put<Korisnik>(this.updateUserPasswordUrl, { },{
+      headers:new HttpHeaders({
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      }),
+      params:{
+        password:password,
+        test:id
+      }
+    })
+
+    return this.korisnik
+
+  }
+
+  updateKorisnik(user: Korisnik):Observable<Korisnik>{
+
+    this.korisnik = this.http.put<Korisnik>(this.updateKorisnikUrl, {
+      id: user.id,
+      username: user.username,
+      password: user.password,
+      userType: user.userType,
+      bookings: user.bookings,
+      noviKolacic: user.noviKolacic
+    })
 
     return this.korisnik
 

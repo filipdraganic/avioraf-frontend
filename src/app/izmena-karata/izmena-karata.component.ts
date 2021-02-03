@@ -57,7 +57,8 @@ export class IzmenaKarataComponent implements OnInit {
 
     this.smerovi = ["Jednosmerna","Povratna"]
 
-      this.kartaService.getKarta(1).subscribe( karta =>{
+    this.routeSub = this.route.params.subscribe(params =>{
+      this.kartaService.getKarta(params['id']).subscribe( karta =>{
         this.karta = karta;
         console.log("Getovana karta :");
         console.log(this.karta);
@@ -83,6 +84,9 @@ export class IzmenaKarataComponent implements OnInit {
 
       })
 
+    })
+
+
 
     // })
 
@@ -93,7 +97,7 @@ export class IzmenaKarataComponent implements OnInit {
     this.letoviService.getLetovi().subscribe( letovi =>{
       this.letovi = letovi
     })
-    this.avionskaKompanijaService.getAvionskaKompanija().subscribe( kompanije =>{
+    this.avionskaKompanijaService.getAvionskaKompanije().subscribe( kompanije =>{
       this.kompanije = kompanije
 
     })

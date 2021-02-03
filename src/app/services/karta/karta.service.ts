@@ -61,6 +61,8 @@ export class KartaService {
 
   }
 
+
+
   getKarta(id) : Observable<Karta>{
 
     if(this.helper.isTokenExpired(localStorage.getItem("jwt"))){

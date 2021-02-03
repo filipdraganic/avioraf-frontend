@@ -1,5 +1,4 @@
-<img src="src/assets/AvioRafLogo.png" alt="">
-<h1 class="justify-content-center">AvioRAF</h1>
+
 
 <button class="btn" (click)="getUsers()">Useri</button>
 
@@ -24,7 +23,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let karta of karte ">
-      <th scope="row" >{{karta.avionskaKompanija.name}}</th>
+      <th scope="row" (click)="goToKompanija(karta.avionskaKompanija)"><a class="btn"><b>{{karta.avionskaKompanija.name}}</b></a></th>
       <td *ngIf="karta.oneway">Jednosmerna</td>
       <td *ngIf="!karta.oneway">Povratna</td>
       <td>{{karta.let.origin.name}}</td>

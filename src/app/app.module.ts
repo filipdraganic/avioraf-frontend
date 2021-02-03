@@ -21,6 +21,8 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dia
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { PromenaSifreComponent } from './promena-sifre/promena-sifre.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     RezervacijeComponent,
     NotFoundComponent,
     RegistracijaComponent,
-    DialogComponent
+    DialogComponent,
+    PromenaSifreComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatDialogModule,
     MatIconModule,
     MatBadgeModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule,
+    FormsModule
   ],
 
   providers: [

@@ -6,6 +6,7 @@ export interface Korisnik {
   password:string;
   userType:string;
   bookings: Rezervacija[];
+  noviKolacic:number;
 
 
 }

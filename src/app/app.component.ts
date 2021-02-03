@@ -38,6 +38,24 @@ export class AppComponent {
     }
   }
 
+  getPermission(){
+    let korisnik =  JSON.parse(localStorage.getItem("korisnik"));
+
+
+    if(korisnik.userType == "ADMIN"){
+      // console.log("Korisnik je admin");
+      return true
+    }
+    else {
+      // console.log("Korisnik je obican user" + korisnik.tipKorisnika)
+      return false
+    }
+
+
+
+  }
+
+
   getBookingsCount(){
     return "BookingsCount :" + (JSON.parse(localStorage.getItem("korisnik"))["bookings"]).length
   }

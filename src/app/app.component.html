@@ -4,7 +4,10 @@
 
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" >ReactJS</a>
+      <a class="navbar-brand" >
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Air_Force_Ensign_of_the_United_Kingdom.svg" width="90px" alt="">
+        <h1 class="justify-content-center">AvioRAF</h1>
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -14,7 +17,7 @@
             <a class="nav-link " routerLink="">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="groups">Groups</a>
+            <a class="nav-link" routerLink="avioKompanije">Avio kompanije</a>
           </li>
 
         </ul>
@@ -26,7 +29,7 @@
           <li class="nav-item " [hidden]="!checkLogin()">
             <a>Username : {{getUsername()}}   </a>
 <!--            <a> {{getBookingsCount()}}</a>-->
-            <a class="btn" (click)="checkLogin()"><mat-icon aria-hidden="false" aria-label="" matBadge="4">filter_none</mat-icon></a>
+            <a class="btn" (click)="checkLogin()" *ngIf="!getPermission()"><mat-icon aria-hidden="false" aria-label="" matBadge="4">filter_none</mat-icon></a>
 
 
 

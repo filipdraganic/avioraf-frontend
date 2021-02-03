@@ -10,6 +10,7 @@ import {KartaService} from '../services/karta/karta.service';
 import {Observable} from 'rxjs';
 import {Korisnik} from '../model/korisnik.model';
 import {PageEvent} from '@angular/material/paginator';
+import {AvionskaKompanija} from '../model/avio-kompanija.model';
 
 @Component({
   selector: 'app-home',
@@ -103,9 +104,6 @@ export class HomeComponent implements OnInit {
       // console.log("Korisnik je obican user" + korisnik.tipKorisnika)
       return false
     }
-
-
-
   }
 
 
@@ -131,6 +129,10 @@ export class HomeComponent implements OnInit {
     this.getKarte(event.pageIndex)
   }
 
+
+  goToKompanija(avioKompanija: AvionskaKompanija){
+    this.router.navigate(['avio-kompanija/'+avioKompanija.id])
+  }
 
 
 }

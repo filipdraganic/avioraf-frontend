@@ -1,1 +1,52 @@
-<p>avio-kompanija works!</p>
+<div *ngIf="avioKompanija !== undefined">
+
+  <a class="btn btn-danger" style="float: right; margin-bottom: 10px" (click)="deleteAvioKompanija()" [hidden]="!getPermission()"> Delete {{avioKompanija.name}}</a>
+
+  <h1 [hidden]="inputMode">Avio kompanija : {{avioKompanija.name}} <mat-icon class="btn" aria-label="Edit" [hidden]="inputMode" (click)="toggleInputMode()">mode</mat-icon></h1>
+
+
+  <h2 [hidden]="!inputMode">Edit AvioKompanija name</h2>
+  <input class="mat-input-element" type="text" [hidden]="!inputMode" [placeholder]="avioKompanija.name" style="margin-right: 10px" [(ngModel)]="tempAvioKompanijaName">
+  <a class="btn btn-primary" [hidden]="!inputMode" (click)="applyAvioKompanijaName()">Apply Changes</a>
+
+  <div>
+    <p></p>
+  </div>
+
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Kompanija</th>
+      <th scope="col">Smer</th>
+      <th scope="col">Pocetak</th>
+      <th scope="col">Destinacija</th>
+      <th scope="col">Datum polaska</th>
+      <th scope="col">Datum povratka</th>
+      <th scope="col">Broj preostalih karata</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let karta of karte ">
+      <td>{{karta.avionskaKompanija.name}}</td>
+      <td *ngIf="karta.oneway">Jednosmerna</td>
+      <td *ngIf="!karta.oneway">Povratna</td>
+      <td>{{karta.let.origin.name}}</td>
+      <td>{{karta.let.destination.name}}</td>
+      <td>{{karta.departDate}}</td>
+      <td *ngIf="karta.returnDate">{{karta.returnDate}}</td>
+      <td *ngIf="!karta.returnDate">/</td>
+      <td *ngIf="karta.count < 10" style="color: red">Jos samo {{karta.count}}</td>
+      <td *ngIf="karta.count >= 10" style="color: black">{{karta.count}}</td>
+
+
+
+    </tr>
+
+    </tbody>
+
+  </table>
+
+
+</div>

@@ -64,11 +64,21 @@ export class LoginComponent implements OnInit {
         console.log("USPEH!");
         console.log(data)
         localStorage.setItem("korisnik", JSON.stringify(data));
+
+        if(data.noviKolacic === 1){
+
+          this.router.navigate(['/login/promenaSifre'])
+
+        }else{
+
+          this.router.navigate([''])
+
+        }
+
       }, other=>{
         console.log("ERROR" + other)
       })
 
-      this.router.navigate([''])
 
     }, other=> {
 
