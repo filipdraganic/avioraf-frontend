@@ -14,8 +14,11 @@ export class AvionskaKompanijaService {
   private readonly getAvionskaKompanijaUrl = "http://localhost:8080/api/kompanije"
   private readonly delAvionskaKompanijaUrl = "http://localhost:8080/api/kompanije"
   private readonly putAvionskaKompanijaUrl = "http://localhost:8080/api/kompanije"
+  private readonly postAvionskaKompanijaUrl = "http://localhost:8080/api/kompanije"
 
   private readonly getKarteAvionskeKompanijeUrl = "http://localhost:8080/api/karte/avioKompanija"
+
+
 
   private avionskaKompanije: Observable<AvionskaKompanija[]>
   private avionskaKompanija: Observable<AvionskaKompanija>
@@ -110,6 +113,18 @@ export class AvionskaKompanijaService {
         'Authorization': 'Bearer ' + localStorage.getItem("jwt")
       }
     })
+  }
+
+  newAvionskaKompanija(name: string): Observable<AvionskaKompanija>{
+
+    return this.http.post<AvionskaKompanija>(this.postAvionskaKompanijaUrl, {
+      name:name
+    },{
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem("jwt")
+      },
+    })
+
   }
 
 

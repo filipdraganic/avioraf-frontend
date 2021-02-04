@@ -5,6 +5,9 @@ import {Subscription} from 'rxjs';
 import {AvionskaKompanija} from '../model/avio-kompanija.model';
 import {Karta} from '../model/karta.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {KartaService} from '../services/karta/karta.service';
+import {KorisnikService} from '../services/korisnik/korisnik.service';
+import {RezervacijaService} from '../services/rezervacija/rezervacija.service';
 
 @Component({
   selector: 'app-avio-kompanija',
@@ -22,11 +25,15 @@ export class AvioKompanijaComponent implements OnInit {
   inputMode = false
 
   tempAvioKompanijaName: string
+  newAviokompanijaName: string
 
 
   constructor(private avioKompanijaService: AvionskaKompanijaService,
+              private kartaService: KartaService,
+              private korisnikService: KorisnikService,
               private router: Router,
               private _snackBar: MatSnackBar,
+              private rezervacijaService:RezervacijaService,
               private route:ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -35,13 +42,7 @@ export class AvioKompanijaComponent implements OnInit {
       this.avioKompanijaService.getAvionskaKompanija(params['id']).subscribe(avioKompanijaData =>{
         this.avioKompanija = avioKompanijaData
 
-        this.avioKompanijaService.getKarteAvionskeKompanije(params['id']).subscribe(karteData =>{
-          this.karte = karteData
-          console.log(this.karte);
-        }, error => {
-          console.log(error);
-          this.openSnackBar(error, "upsUps")
-        })
+        this.getKarte()
 
 
       }, error => {
@@ -51,6 +52,16 @@ export class AvioKompanijaComponent implements OnInit {
 
   }
 
+  getKarte(){
+    this.avioKompanijaService.getKarteAvionskeKompanije(this.avioKompanija.id).subscribe(karteData =>{
+    this.karte = karteData
+    console.log(this.karte);
+  }, error => {
+    console.log(error);
+    this.openSnackBar(error, "upsUps")
+  })
+
+  }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
@@ -118,6 +129,44 @@ export class AvioKompanijaComponent implements OnInit {
       this.router.navigate([''])
     }, error => {
       this.openSnackBar("Error while deleting aviokompanija", "Oh no... anyway")
+    })
+  }
+
+  newAvioKompanija(){
+    this.avioKompanijaService.newAvionskaKompanija(this.newAviokompanijaName).subscribe(data =>{
+      console.log(data);
+      this.openSnackBar("Created "+this.newAviokompanijaName, "ok")
+
+    }, error => {
+      this.openSnackBar("Erro while creating " + this.newAviokompanijaName, ":(")
+
+    })
+  }
+
+
+  brisanjeKarte(karta){
+    this.kartaService.delKarta(karta).subscribe( data =>{
+      console.log("data" + data);
+      location.reload()
+
+    })
+  }
+
+  izmenaKarte(id){
+    this.router.navigate(['karta/'+id])
+  }
+
+  rezervisiKartu(karta){
+    this.rezervacijaService.postRezervacija(karta).subscribe(data =>{
+      console.log(data);
+      this.korisnikService.setupLocalstorage().subscribe(data =>{
+        console.log(data);
+        localStorage.setItem("korisnik", JSON.stringify(data))
+
+        this.getKarte()
+
+        this.openSnackBar("Rezervisana karta","Woho")
+      })
     })
   }
 

@@ -35,7 +35,8 @@
       <td *ngIf="karta.count >= 10" style="color: black">{{karta.count}}</td>
       <td *ngIf="getPermission()" ><a class="btn btn-warning" (click)="izmenaKarte(karta.id)">Izmena karte</a></td>
       <td *ngIf="getPermission()" ><a class="btn btn-danger" (click)="brisanjeKarte(karta)">Obrisi kartu</a></td>
-      <td *ngIf="!getPermission()" ><a class="btn btn-danger" (click)="rezervisiKartu(karta)">Rezervisi</a></td>
+      <td *ngIf="getTicketDate(karta) && !getPermission()  " ><a class="btn btn-danger"  (click)="rezervisiKartu(karta)">Rezervisi</a></td>
+      <td *ngIf="!getTicketDate(karta) && !getPermission()  " ><a class="btn btn-danger disabled"  (click)="rezervisiKartu(karta)">Rezervisi</a></td>
 
 
     </tr>

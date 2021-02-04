@@ -5,5 +5,5 @@ export interface Rezervacija {
   id:number;
   isAvailable: boolean;
   flight: Let;
-  karta: Karta;
+  avionskaKarta: Karta;
 }

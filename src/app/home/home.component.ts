@@ -11,6 +11,7 @@ import {Observable} from 'rxjs';
 import {Korisnik} from '../model/korisnik.model';
 import {PageEvent} from '@angular/material/paginator';
 import {AvionskaKompanija} from '../model/avio-kompanija.model';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
 
   private helper = new JwtHelperService()
 
-  public page = 1
+  public page = 0
   public pageSize = 5
   public pageEvent: PageEvent;
   public pageIndex = 0
@@ -35,7 +36,9 @@ export class HomeComponent implements OnInit {
   constructor(private korisnikService: KorisnikService,
               private loginService:LoginService,
               private kartaService:KartaService,
-              private router: Router) { }
+              private router: Router,
+              private _snackBar: MatSnackBar,
+              private rezervacijaService:RezervacijaService) { }
 
   ngOnInit(): void {
 
@@ -47,11 +50,18 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['/login'])
     }
 
-
+    this.getUsers()
     console.log("this.getKarte()");
     this.getKarte()
 
   }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
 
   checkLogin(){
     if(localStorage.getItem('jwt') == null){
@@ -63,7 +73,7 @@ export class HomeComponent implements OnInit {
     console.log("nesto")
     // console.log(this.korisnikService.getUsers())
     let response = this.korisnikService.setupLocalstorage().subscribe(data=>{
-      console.log(data);
+      localStorage.setItem("korisnik", JSON.stringify(data))
     })
     console.log(response);
   }
@@ -89,6 +99,17 @@ export class HomeComponent implements OnInit {
   }
 
   goToDetails(id){
+
+  }
+
+  getTicketDate(karta){
+
+    if(Date.now().toLocaleString() < karta.departDate.toLocaleString()){
+      // console.log(Date.now());
+      // console.log(karta.departDate);
+      return false
+    }
+    return true
 
   }
 
@@ -120,12 +141,21 @@ export class HomeComponent implements OnInit {
   }
 
   rezervisiKartu(karta){
-    this.korisnikService.addBookingToUser(karta.id).subscribe(data =>{
+    this.rezervacijaService.postRezervacija(karta).subscribe(data =>{
       console.log(data);
+      this.korisnikService.setupLocalstorage().subscribe(data =>{
+        console.log(data);
+        localStorage.setItem("korisnik", JSON.stringify(data))
+
+        this.getKarte(this.page)
+
+        this.openSnackBar("Rezervisana karta","Woho")
+      })
     })
   }
 
   handlePageEvent(event :PageEvent){
+    this.page = event.pageIndex
     this.getKarte(event.pageIndex)
   }
 
@@ -133,6 +163,8 @@ export class HomeComponent implements OnInit {
   goToKompanija(avioKompanija: AvionskaKompanija){
     this.router.navigate(['avio-kompanija/'+avioKompanija.id])
   }
+
+
 
 
 }

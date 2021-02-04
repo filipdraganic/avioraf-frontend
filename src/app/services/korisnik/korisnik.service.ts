@@ -4,6 +4,8 @@ import {Korisnik} from '../../model/korisnik.model';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {Rezervacija} from '../../model/rezervacija.model';
+import {Karta} from '../../model/karta.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,7 +20,7 @@ const httpOptions = {
 
 export class KorisnikService{
   private readonly getUsersUrl = "http://localhost:8080/api/korisnici/all"
-  private readonly getUserUrl = "http://localhost:8080/api/korisnici/username"
+  private readonly getUserUrl = "http://localhost:8080/api/korisnici/id"
   private readonly delUserUrl = "http://localhost:8080/api/korisnici/"
   private readonly createUserUrl = "http://localhost:8080/api/korisnici/"
   private readonly addBookingToUserUrl = "http://localhost:8080/api/korisnici/booking"
@@ -64,7 +66,9 @@ export class KorisnikService{
     }
 
     this.user = this.http.get<Korisnik>(this.getUserUrl,{
-      params:{},
+      params:{
+        id:JSON.parse(localStorage.getItem("korisnik")).id
+      },
       headers:{
         'content-type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem("jwt")
@@ -108,20 +112,21 @@ export class KorisnikService{
 
   }
 
-  addBookingToUser(bookingId:Number) :Observable<Korisnik>{
+  addBookingToUser(karta: Karta) :Observable<Rezervacija>{
 
-  let korisnikId = JSON.parse(localStorage.getItem("korisnik"))['id']
+  let korisnikKojiRezervise = JSON.parse(localStorage.getItem("korisnik"))
   let jwttoken = this.helper.decodeToken(localStorage.getItem("jwt"))
 
     console.log(jwttoken)
 
-    let promenjiva = this.http.put<Korisnik>(this.addBookingToUserUrl, {
+    let promenjiva = this.http.post<Rezervacija>(this.addBookingToUserUrl, {
+      let: karta.let,
+      avionskaKarta: karta,
+      korisnik: korisnikKojiRezervise
+
+    },{
       headers:{
         'Authorization': 'Bearer ' + localStorage.getItem("jwt")
-      },
-      params:{
-        bookingId:bookingId,
-        korisnikId:korisnikId
       }
     })
 
@@ -133,14 +138,29 @@ export class KorisnikService{
 
     this.korisnik = this.http.get<Korisnik>(this.getUserUrl, {
       params:{
-        username:localStorage.getItem("username")
+        id:JSON.parse(localStorage.getItem("korisnik")).id
       },
       headers:{
         'Authorization': 'Bearer ' + localStorage.getItem("jwt")
       }
     })
     console.log("RETURN DATA BELOW");
-    console.log(this.korisnik);
+
+    return this.korisnik
+
+  }
+
+  setupLocalstorageUsername(username:string) :Observable<Korisnik>{
+
+    this.korisnik = this.http.get<Korisnik>(this.getKorisnikUrl, {
+      params:{
+        username: username
+      },
+      headers:{
+        'Authorization': 'Bearer ' + localStorage.getItem("jwt")
+      }
+    })
+    console.log("RETURN DATA BELOW");
 
     return this.korisnik
 

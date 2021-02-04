@@ -1,1 +1,38 @@
-<p>rezervacije works!</p>
+
+<table class="table">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">Avionska kompanija</th>
+    <th scope="col">Smer</th>
+    <th scope="col">Pocetak</th>
+    <th scope="col">Destinacija</th>
+    <th scope="col">Datum polaska</th>
+    <th scope="col">Datum povratka</th>
+    <th scope="col">Istekla?</th>
+    <th scope="col" *ngIf="!getPermission()">Kupi</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let rezervacija of rezervacije ">
+    <td scope="row" (click)="goToKompanija(rezervacija.avionskaKarta.avionskaKompanija)"><a class="btn"><b>{{rezervacija.avionskaKarta.avionskaKompanija.name}}</b></a></td>
+    <td *ngIf="rezervacija.avionskaKarta.oneway">Jednosmerna</td>
+    <td *ngIf="!rezervacija.avionskaKarta.oneway">Povratna</td>
+    <td>{{rezervacija.avionskaKarta.let.origin.name}}</td>
+    <td>{{rezervacija.avionskaKarta.let.destination.name}}</td>
+    <td>{{rezervacija.avionskaKarta.departDate}}</td>
+    <td *ngIf="rezervacija.avionskaKarta.returnDate">{{rezervacija.avionskaKarta.returnDate}}</td>
+    <td *ngIf="!rezervacija.avionskaKarta.returnDate">/</td>
+    <td>{{getDaLiJeIstekla(rezervacija)}}</td>
+    <td *ngIf="rezervacija.isAvailable &&!getPermission()"><a class="btn btn-success" (click)="deleteRezervacija(rezervacija)">Kupi</a></td>
+    <td *ngIf="!rezervacija.isAvailable &&!getPermission()"><a class="btn btn-success disabled"  (click)="deleteRezervacija(rezervacija)">Kupi</a></td>
+
+
+  </tr>
+
+  </tbody>
+
+
+</table>
+
+

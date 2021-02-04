@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
 
     let promenjiva = this.loginService.login(credentials).subscribe(data=>{
 
-      this.korisnikService.setupLocalstorage().subscribe( data=>{
+      this.korisnikService.setupLocalstorageUsername(credentials.username).subscribe( data=>{
         console.log("USPEH!");
         console.log(data)
         localStorage.setItem("korisnik", JSON.stringify(data));

@@ -29,7 +29,7 @@
           <li class="nav-item " [hidden]="!checkLogin()">
             <a>Username : {{getUsername()}}   </a>
 <!--            <a> {{getBookingsCount()}}</a>-->
-            <a class="btn" (click)="checkLogin()" *ngIf="!getPermission()"><mat-icon aria-hidden="false" aria-label="" matBadge="4">filter_none</mat-icon></a>
+            <a class="btn" (click)="this.router.navigate(['rezervacije'])" *ngIf="!getPermission()"><mat-icon aria-hidden="false" aria-label="" matBadge="{{getNumberOfBookings()}}">airplane_ticket</mat-icon></a>
 
 
 

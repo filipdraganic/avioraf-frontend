@@ -35,7 +35,7 @@ export class LoginService {
       console.log(responseData)
       localStorage.setItem("jwt", responseData.JWT)
       localStorage.setItem("username", responseData.username)
-
+      this.http.get(this.getKorisnik)
 
 
     }))
@@ -52,5 +52,6 @@ export class LoginService {
     localStorage.removeItem("jwt")
     localStorage.removeItem("username")
     localStorage.removeItem('id')
+    localStorage.removeItem('korisnik')
   }
 }

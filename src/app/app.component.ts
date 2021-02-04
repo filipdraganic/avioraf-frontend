@@ -50,9 +50,12 @@ export class AppComponent {
       // console.log("Korisnik je obican user" + korisnik.tipKorisnika)
       return false
     }
+  }
 
+  getNumberOfBookings(){
+    let korisnik = JSON.parse(localStorage.getItem('korisnik'));
 
-
+    return korisnik.bookings.length
   }
 
 
